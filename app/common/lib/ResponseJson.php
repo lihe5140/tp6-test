@@ -1,23 +1,23 @@
 <?php
 
+/**
+ * 通用化API数据格式输出
+ */
 
 namespace app\common\lib;
-
-use app\common\lib\error\ApiErrDesc;
+use think\facade\Config;
 
 trait ResponseJson
 {
-
     /**
      * @param null $data
      * @param int $httpCode
      * @return \think\response\Json
      */
-    public static function success($data = null, $httpCode = 200)
+    public static function successJson($data = null, $httpCode = 200)
     {
-
-        $status = ApiErrDesc::SUCCESS[0];
-        $message = ApiErrDesc::SUCCESS[1];
+        $status = Config::get('jsonstatus.SUCCESS.status');
+        $message = Config::get('jsonstatus.SUCCESS.msg');
         return self::jsonResponse($status, $message, $data, $httpCode);
     }
 
@@ -28,11 +28,10 @@ trait ResponseJson
      * @param int $httpCode
      * @return \think\response\Json
      */
-    public static function error($status, $message, $data = null, $httpCode = 500)
+    public static function errorJson($status, $message, $data = null, $httpCode = 500)
     {
         return self::jsonResponse($status, $message, $data, $httpCode);
     }
-
     /**
      * @param $status
      * @param $message
@@ -48,7 +47,6 @@ trait ResponseJson
             'message' => $message,
             'result' => $data
         ];
-
         return json($result, $httpCode);
     }
 }

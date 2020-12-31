@@ -2,11 +2,10 @@
 
 namespace app\api\controller;
 
-use app\BaseController;
 use app\common\auth\JwtAuth;
 use app\common\lib\ResponseJson;
 
-class Test extends BaseController
+class Gettoken
 {
     use ResponseJson;
     public function index()
@@ -14,6 +13,6 @@ class Test extends BaseController
         // 获取jwtAuth的句柄
         $jwtAuth = JwtAuth::getInstance();
         $token = $jwtAuth->setUid(1)->encode()->getToken();
-        return  $this->success(['token' => $token]);
+        return  $this->successJson(['x-access-token' => $token]);
     }
 }

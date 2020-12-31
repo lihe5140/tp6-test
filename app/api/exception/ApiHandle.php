@@ -4,6 +4,7 @@ namespace app\api\exception;
 
 use think\exception\Handle;
 use think\Response;
+use think\facade\Config;
 use Throwable;
 use app\common\lib\ResponseJson;
 use app\common\lib\error\ApiErrDesc;
@@ -17,6 +18,7 @@ class ApiHandle extends Handle
 {
 
     protected $httpCode = 500;
+
     /**
      * Render an exception into an HTTP response.
      *
@@ -34,9 +36,9 @@ class ApiHandle extends Handle
         } else {
             $status = $e->getCode();
             if (!$status || $status < 0) {
-                $status = ApiErrDesc::UNKNOWN_ERR[0];
+                $status = Config::get('error.status');
             }
-            $message = $e->getMessage() ?: ApiErrDesc::UNKNOWN_ERR[1];
+            $message = $e->getMessage() ?: Config::get('error.msg');
         }
 
         // 添加自定义异常处理机制
@@ -44,7 +46,6 @@ class ApiHandle extends Handle
 
             $this->httpCode = $e->getStatusCode();
         }
-
-        return ResponseJson::error($status, $message, null, $this->httpCode);
+        return ResponseJson::errorJson($status, $message, null, $this->httpCode);
     }
 }
