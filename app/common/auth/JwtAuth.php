@@ -2,6 +2,7 @@
 
 namespace app\common\auth;
 
+use think\facade\Config;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
@@ -30,12 +31,12 @@ class JwtAuth
      * claim iss
      * @var string
      */
-    private $iss = 'chao.com';
+    private $iss;
     /**
      * claim aud
      * @var string
      */
-    private $aud = 'tp6_server_app';
+    private $aud;
     /**
      * 身份 uid
      * @var string
@@ -45,7 +46,7 @@ class JwtAuth
     /**
      * @var string
      */
-    private $secret = 'TP6&*chao1992#$LJL*&^&*9089';
+    private $secret;
 
     /**
      * @var null
@@ -56,6 +57,9 @@ class JwtAuth
      */
     private function __construct()
     {
+        $this->iss = Config::get('jwt.iss');
+        $this->aud = Config::get('jwt.aud');
+        $this->secret = Config::get('jwt.secret');
     }
     /*
      *

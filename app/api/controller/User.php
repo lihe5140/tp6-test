@@ -84,7 +84,7 @@ class User
         // echo $user->username;
         halt($user->username);
     }
-    
+
     /**
      * 显示编辑资源表单页.
      *

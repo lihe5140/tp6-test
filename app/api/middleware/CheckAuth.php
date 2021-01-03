@@ -4,11 +4,8 @@
 namespace app\api\middleware;
 
 
-use app\api\exception\ApiException;
+use app\MyException;
 use app\common\auth\JwtAuth;
-use app\common\lib\ResponseJson;
-use think\facade\Config;
-// use think\facade\Request;
 
 /**
  * 签名认证
@@ -27,7 +24,7 @@ class CheckAuth
         // JWT用户令牌认证，令牌内容获取
         $userToken = $request->header('x-access-token');
         if (empty($userToken)) {
-            throw new ApiException(Config::get('jsonstatus.token.token_empty'));
+            throw new MyException(90001, config('errorcode')[90001]);
         };
         if ($userToken) {
             // 校验
@@ -36,10 +33,10 @@ class CheckAuth
             if ($jwtAuth->validate() && $jwtAuth->verify()) {
                 return $next($request);
             } else {
-                throw new ApiException(Config::get('jsonstatus.token.token_error'));
+                throw new MyException(90002, config('errorcode')[90002]);
             }
         } else {
-            throw new ApiException(Config::get('jsonstatus.token.token_error'));
+            throw new MyException(90002, config('errorcode')[90002]);
         }
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace app;
 
 use think\db\exception\DataNotFoundException;
@@ -51,7 +52,12 @@ class ExceptionHandle extends Handle
     public function render($request, Throwable $e): Response
     {
         // 添加自定义异常处理机制
-
+        if ($e instanceof \app\MyException) {
+            return errorJson($e->getCode(), $e->getMessage());
+        }
+        if ($e instanceof \think\exception\ValidateException) {
+            return errorJson(10001, $e->getMessage());
+        }
         // 其他错误交给系统处理
         return parent::render($request, $e);
     }

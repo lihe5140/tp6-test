@@ -11,7 +11,7 @@ use app\common\lib\ResponseJson;
  * Class Base
  * @package app\controller
  */
-abstract class BaseController
+abstract class Base
 {
     /**
      * @var int
@@ -34,6 +34,27 @@ abstract class BaseController
         //获取条数
         $this->pageSize = (int)Request::param('page_size', Config::get('app.page_size'));
     }
+    /**
+     * 获取字符串型自动编码
+     *
+     * @param [type] $string
+     * @param string $start
+     * @return void
+     */
+    protected function auto_code($string, $start = '1')
+    {
+        if (!$string)
+            return $start;
+        if (is_numeric($string)) { // 如果纯数字则直接加1
+            return sprintf('%0' . strlen($string) . 's', $string + 1);
+        } else { // 非纯数字则先分拆
+            $reg = '/^([a-zA-Z-_]+)([0-9]+)$/';
+            $str = preg_replace($reg, '$1', $string); // 字母部分
+            $num = preg_replace($reg, '$2', $string); // 数字部分
+            return $str . sprintf('%0' . (strlen($string) - strlen($str)) . 's', $num + 1);
+        }
+    }
+
 
     /**
      * @param $data

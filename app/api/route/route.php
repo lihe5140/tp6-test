@@ -16,6 +16,10 @@ Route::get('/', 'Index/index');
 //用户模块
 Route::resource('user', 'User');
 
+// 管理员角色模块
+
+Route::resource('role', 'api/Role');
+
 // //一对多用户喜好
 // Route::get('user/:id/hobby', 'User/hobby');
 
